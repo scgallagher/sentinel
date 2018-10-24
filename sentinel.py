@@ -110,6 +110,4 @@ scan_interval = int(parms.get('scan_interval'))
 smtp_host = parms.get('smtp_host')
 smtp_port = parms.get('smtp_port')
 
-print(parms)
-
-#start_scan()
+start_scan()
