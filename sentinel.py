@@ -8,8 +8,7 @@ import time
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 
-first_pass = True
-prev_listing = []
+from lib.FileMonitor import FileMonitor
 
 if (len(sys.argv) < 2):
     print('\nUsage: sentinel.py <control file>')
@@ -46,7 +45,7 @@ def send_email(subject, body):
 
     server.sendmail(from_addr, to_addr, msg_str)
 
-def build_report(added_files, removed_files):
+def build_report(dir_listing, added_files, removed_files):
 
     report = "Report for directory " + input_dir + "\n\n"
 
@@ -68,32 +67,17 @@ def build_report(added_files, removed_files):
 
     return report
 
-def start_scan():
+def run_scan():
+
+    first_pass = True
+    monitor = FileMonitor(input_dir)
 
     while True:
 
-        print('Scanning')
+        added_files, removed_files = monitor.scan_dir()
 
-        current_listing = [file for file in os.listdir(input_dir)]
-        added_files = []
-        removed_files = []
+        report = build_report(monitor.dir_listing, added_files, removed_files)
 
-        for file in current_listing:
-
-            if file not in prev_listing:
-                prev_listing.append(file)
-                added_files.append(file)
-
-        for file in prev_listing:
-
-            if file not in current_listing:
-                prev_listing.remove(file)
-                removed_files.append(file)
-
-        # print(prev_listing)
-        # print(' Added:  ', added_files)
-        # print(' Removed:', removed_files)
-        report = build_report(added_files, removed_files)
         if first_pass:
             first_pass = False
         else:
@@ -110,4 +94,4 @@ scan_interval = int(parms.get('scan_interval'))
 smtp_host = parms.get('smtp_host')
 smtp_port = parms.get('smtp_port')
 
-start_scan()
+run_scan()
