@@ -29,7 +29,7 @@ def parse_control_file():
     line = control_file.readline()
     while line:
 
-        if line != '\n' and line[0] != '#':
+        if len(line.strip()) > 0 and line[0] != '#':
 
             key, value = line.split('=')
             parms[key] = value.strip()

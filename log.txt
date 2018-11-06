@@ -14,3 +14,5 @@
 [17:09:46] No changes
 [17:09:51] Sending email report
 [17:42:24] WARNING: SMTP socket timeout - email not sent
+[17:56:33] Sentinel service started
+[17:56:33] Sending email report
