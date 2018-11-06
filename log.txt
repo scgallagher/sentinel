@@ -1,0 +1,16 @@
+[16:59:21] Sentinel service started
+[16:59:21] No changes
+[16:59:26] No changes
+[16:59:31] No changes
+[16:59:36] No changes
+[16:59:41] Sending email report
+[16:59:41] Email report sent to sean.gallagher@ihsmarkit.com
+[16:59:46] No changes
+[17:00:05] Sentinel service started
+[17:00:05] No changes
+[17:00:10] No changes
+[17:09:41] Sentinel service started
+[17:09:41] No changes
+[17:09:46] No changes
+[17:09:51] Sending email report
+[17:42:24] WARNING: SMTP socket timeout - email not sent

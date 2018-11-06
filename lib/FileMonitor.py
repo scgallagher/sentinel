@@ -1,28 +1,54 @@
+from __future__ import print_function
+
+import os
+
 class FileMonitor:
 
-    def __init__(self, scan_dir):
+    def __init__(self, row_limit=1000):
 
-        self.dir_listing = []
-        self.first_pass = True
+        self.file_dict = {}
+        self.row_limit = row_limit
 
-    def scan_dir(self):
+    def check_for_changes(self, file_path):
 
-        print('Scanning', self.scan_dir)
+        modified = False
+        files = self.file_dict.keys()
+        current_stat = os.stat(file_path)
+        current_mod_time = current_stat.st_mtime
 
-        current_listing = [file for file in os.listdir(self.scan_dir)]
-        added_files = []
-        removed_files = []
+        if file_path in files:
+            prev_mod_time = self.file_dict.get(file_path)
+            if current_mod_time > prev_mod_time:
+                self.file_dict[file_path] = current_mod_time
+                modified = True
+        else:
+            self.file_dict[file_path] = current_mod_time
 
-        for file in current_listing:
+        return modified
 
-            if file not in self.dir_listing:
-                self.dir_listing.append(file)
-                added_files.append(file)
+    def check_for_contents(self, file_path):
 
-        for file in self.dir_listing:
+        stat = os.stat(file_path)
 
-            if file not in current_listing:
-                self.dir_listing.remove(file)
-                removed_files.append(file)
+        if stat.st_size > 0:
+            contents = self.get_file_contents(file_path)
+            return True
+        else:
+            return False
 
-        return added_files, removed_files
+    def get_file_contents(self, file_path):
+
+        file = open(file_path, 'r')
+        line = file.readline()
+
+        row_count = 0
+        contents = ''
+
+        while line and row_count < self.row_limit:
+
+            contents += line
+            line = file.readline()
+
+        file.close()
+
+        return contents
