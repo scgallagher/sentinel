@@ -119,10 +119,10 @@ def monitor_file_regex():
         if match:
             matches.append(file)
 
-    if not matches:
+    if matches:
+        monitor_file(matches)
+    else:
         log_message('WARNING: No regex matches', log_file, debug)
-
-    monitor_file(matches)
 
 parms = parse_control_file()
 
